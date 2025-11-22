@@ -131,6 +131,8 @@ const App = {
       }
     },
 
+methods: {
+
     toggleView() {
       this.view = this.view === 'lessons' ? 'cart' : 'lessons';
       this.orderDone = false;
@@ -138,6 +140,15 @@ const App = {
 
     toggleOrder() {
       this.sort.order = this.sort.order === 'asc' ? 'desc' : 'asc';
+    },
+
+    loginUser(credentials) {
+      this.loggedInUser = {
+        name: credentials.email.split("@")[0],
+        email: credentials.email
+      };
+      this.loginError = '';
+      this.view = 'lessons';
     },
 
     registerUser(user) {
@@ -151,24 +162,13 @@ const App = {
       this.view = 'login';
     },
 
-    loginUser(credentials) {
-      const user = this.users.find(
-        (u) => u.email === credentials.email && u.password === credentials.password
-      );
-      if (!user) {
-        this.loginError = 'Invalid email or password';
-        return;
-      }
-      this.loggedInUser = user;
-      this.loginError = '';
-      this.view = 'lessons';
-    },
-
     logout() {
       this.loggedInUser = null;
       this.cart = {};
       this.view = 'login';
     },
+}
+
   },
 
   computed: {
