@@ -38,7 +38,7 @@ const App = {
           subject: l.subject,
           location: l.location,
           price: l.price,
-          spaces: l.space,
+          spaces: l.spaces,
           icon: l.icon,
           qty: 0
         }));
