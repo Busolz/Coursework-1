@@ -17,7 +17,6 @@ const App = {
       searchQuery: '',
       sort: { by: 'subject', order: 'asc' },
 
-      // lessons loaded from backend
       lessons: [],
 
       cart: {},
@@ -26,13 +25,12 @@ const App = {
     };
   },
 
-  // Load lessons from backend
   mounted() {
     this.fetchLessons();
   },
 
   methods: {
-    // GET lessons from backend
+    // Load lessons from backend
     async fetchLessons() {
       try {
         const response = await fetch("http://localhost:3000/lessons");
@@ -43,95 +41,14 @@ const App = {
           subject: l.subject,
           location: l.location,
           price: l.price,
-          spaces: l.spaces,
+          spaces: l.space,   // backend uses "space"
           icon: l.icon,
-          qty: 0 // NEW
+          qty: 0             // UI quantity
         }));
       } catch (err) {
         console.error("Failed to load lessons", err);
       }
     },
-
-    // ADD 1 to cart
-    addToCart(lesson) {
-      if (lesson.spaces === 0) return;
-
-      lesson.spaces--;
-      lesson.qty++;
-
-      if (!this.cart[lesson.id]) {
-        this.cart[lesson.id] = { item: lesson, qty: 0 };
-      }
-
-      this.cart[lesson.id].qty++;
-    },
-
-    // REMOVE 1 from cart
-    removeOne(lesson) {
-      if (lesson.qty > 0) {
-        lesson.qty--;
-        lesson.spaces++;
-
-        if (this.cart[lesson.id]) {
-          this.cart[lesson.id].qty--;
-          if (this.cart[lesson.id].qty <= 0) {
-            delete this.cart[lesson.id];
-          }
-        }
-      }
-    },
-
-    // REMOVE item completely
-    removeFromCart(lesson) {
-      if (!this.cart[lesson.id]) return;
-
-      const qty = this.cart[lesson.id].qty;
-      lesson.spaces += qty;
-      lesson.qty = 0;
-
-      delete this.cart[lesson.id];
-    },
-
-    // CHECKOUT (POST order + update spaces)
-    async checkout() {
-      if (!this.canCheckout) return;
-
-      try {
-        // 1. Build order payload
-        const order = {
-          name: this.form.name,
-          phone: this.form.phone,
-          lessons: this.cartItems.map(ci => String(ci.item.id))
-        };
-
-        // 2. Post order
-        await fetch("http://localhost:3000/orders", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(order)
-        });
-
-        // 3. Update spaces in backend
-        for (const ci of this.cartItems) {
-          await fetch(`http://localhost:3000/lessons/${ci.item.id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ space: ci.item.spaces })
-          });
-        }
-
-        // Reset
-        this.orderDone = true;
-        this.cart = {};
-        this.form = { name: '', phone: '' };
-        this.fetchLessons();
-
-      } catch (err) {
-        console.error("Checkout failed", err);
-      }
-    },
-
-methods: {
 
     toggleView() {
       this.view = this.view === 'lessons' ? 'cart' : 'lessons';
@@ -142,11 +59,13 @@ methods: {
       this.sort.order = this.sort.order === 'asc' ? 'desc' : 'asc';
     },
 
+    // ✔ Option A login: login ALWAYS succeeds
     loginUser(credentials) {
       this.loggedInUser = {
         name: credentials.email.split("@")[0],
         email: credentials.email
       };
+
       this.loginError = '';
       this.view = 'lessons';
     },
@@ -167,7 +86,83 @@ methods: {
       this.cart = {};
       this.view = 'login';
     },
-}
+
+    addToCart(lesson) {
+      if (lesson.spaces === 0) return;
+
+      lesson.spaces--;
+      lesson.qty++;
+
+      if (!this.cart[lesson.id]) {
+        this.cart[lesson.id] = { item: lesson, qty: 0 };
+      }
+
+      this.cart[lesson.id].qty++;
+    },
+
+    removeOne(lesson) {
+      if (lesson.qty > 0) {
+        lesson.qty--;
+        lesson.spaces++;
+
+        if (this.cart[lesson.id]) {
+          this.cart[lesson.id].qty--;
+          if (this.cart[lesson.id].qty <= 0) {
+            delete this.cart[lesson.id];
+          }
+        }
+      }
+    },
+
+    removeFromCart(lesson) {
+      if (!this.cart[lesson.id]) return;
+
+      const qty = this.cart[lesson.id].qty;
+      lesson.spaces += qty;
+      lesson.qty = 0;
+
+      delete this.cart[lesson.id];
+    },
+
+    async checkout() {
+      if (!this.canCheckout) return;
+
+      try {
+        // 1. Build order payload
+        const order = {
+          name: this.form.name,
+          phone: this.form.phone,
+          lessons: this.cartItems.map(ci => String(ci.item.id))
+        };
+
+        // 2. Send order to backend
+        await fetch("http://localhost:3000/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(order)
+        });
+
+        // 3. Update lesson spaces
+        for (const ci of this.cartItems) {
+          await fetch(`http://localhost:3000/lessons/${ci.item.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ space: ci.item.spaces })
+          });
+        }
+
+        // 4. Reset app state
+        this.orderDone = true;
+        this.cart = {};
+        this.form = { name: '', phone: '' };
+
+        // reload updated lessons
+        this.fetchLessons();
+
+      } catch (err) {
+        console.error("Checkout failed", err);
+      }
+    },
 
   },
 
@@ -184,12 +179,14 @@ methods: {
       const arr = [...this.filteredLessons];
       const key = this.sort.by;
       const order = this.sort.order === 'asc' ? 1 : -1;
+
       arr.sort((a, b) => {
         let av = a[key], bv = b[key];
         if (typeof av === 'string') av = av.toLowerCase();
         if (typeof bv === 'string') bv = bv.toLowerCase();
         return av > bv ? order : av < bv ? -order : 0;
       });
+
       return arr;
     },
 
@@ -220,6 +217,7 @@ methods: {
 
   template: `
     <div class="container py-4">
+
       <HeaderBar v-if="view !== 'login' && view !== 'register'"
                  :cartCount="cartCount"
                  @toggleView="toggleView"
@@ -258,6 +256,7 @@ methods: {
                 @removeItem="removeFromCart"
                 @back="toggleView"
                 v-model:form="form" />
+
     </div>
   `
 };
