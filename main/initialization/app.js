@@ -30,7 +30,7 @@ const App = {
   methods: {
     async fetchLessons() {
       try {
-        const response = await fetch("http://localhost:3000/lessons");
+        const response = await fetch("https://coursework-2-t7m3.onrender.com");
         const data = await response.json();
 
         this.lessons = data.map((l) => ({
