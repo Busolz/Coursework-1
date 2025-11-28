@@ -16,9 +16,7 @@ const App = {
       registerError: '',
       searchQuery: '',
       sort: { by: 'subject', order: 'asc' },
-
       lessons: [],
-
       cart: {},
       form: { name: '', phone: '' },
       orderDone: false,
@@ -30,7 +28,6 @@ const App = {
   },
 
   methods: {
-    // Load lessons from backend
     async fetchLessons() {
       try {
         const response = await fetch("http://localhost:3000/lessons");
@@ -41,9 +38,9 @@ const App = {
           subject: l.subject,
           location: l.location,
           price: l.price,
-          spaces: l.space,   // backend uses "space"
+          spaces: l.space,
           icon: l.icon,
-          qty: 0             // UI quantity
+          qty: 0
         }));
       } catch (err) {
         console.error("Failed to load lessons", err);
@@ -59,13 +56,12 @@ const App = {
       this.sort.order = this.sort.order === 'asc' ? 'desc' : 'asc';
     },
 
-    // ✔ Option A login: login ALWAYS succeeds
+    // ALWAYS login (Option A)
     loginUser(credentials) {
       this.loggedInUser = {
         name: credentials.email.split("@")[0],
         email: credentials.email
       };
-
       this.loginError = '';
       this.view = 'lessons';
     },
@@ -128,21 +124,18 @@ const App = {
       if (!this.canCheckout) return;
 
       try {
-        // 1. Build order payload
         const order = {
           name: this.form.name,
           phone: this.form.phone,
           lessons: this.cartItems.map(ci => String(ci.item.id))
         };
 
-        // 2. Send order to backend
         await fetch("http://localhost:3000/orders", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(order)
         });
 
-        // 3. Update lesson spaces
         for (const ci of this.cartItems) {
           await fetch(`http://localhost:3000/lessons/${ci.item.id}`, {
             method: "PUT",
@@ -151,19 +144,16 @@ const App = {
           });
         }
 
-        // 4. Reset app state
         this.orderDone = true;
         this.cart = {};
         this.form = { name: '', phone: '' };
 
-        // reload updated lessons
         this.fetchLessons();
 
       } catch (err) {
         console.error("Checkout failed", err);
       }
     },
-
   },
 
   computed: {
@@ -260,3 +250,4 @@ const App = {
     </div>
   `
 };
+
