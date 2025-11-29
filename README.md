@@ -1,13 +1,13 @@
 A full-stack web application that allows users to browse lessons, add them to a cart, register or log in, and place orders.
 The application uses:
 
-Front-End: HTML, CSS, JavaScript, Vue.js
+-Front-End: HTML, CSS, JavaScript, Vue.js
 
-Back-End: Node.js, Express.js
+-Back-End: Node.js, Express.js
 
-Database: MongoDB Atlas
+-Database: MongoDB Atlas
 
-Hosting: GitHub Pages (frontend) + Render (backend)
+-Hosting: GitHub Pages (frontend) + Render (backend)
 
 
 Link to the GitHub Repository - Frontend: https://github.com/Busolz/Coursework-1.git
