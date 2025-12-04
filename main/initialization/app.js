@@ -130,14 +130,14 @@ const App = {
           lessons: this.cartItems.map(ci => String(ci.item.id))
         };
 
-        await fetch("http://localhost:3000/orders", {
+        await fetch("https://coursework-2-t7m3.onrender.com/orders", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(order)
         });
 
         for (const ci of this.cartItems) {
-          await fetch(`http://localhost:3000/lessons/${ci.item.id}`, {
+          await fetch(`https://coursework-2-t7m3.onrender.com/lessons/${ci.item.id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ space: ci.item.spaces })
