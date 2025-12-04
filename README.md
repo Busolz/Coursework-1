@@ -1,197 +1,122 @@
-# After-School Lessons Marketplace
-
 A full-stack web application that allows users to browse lessons, add them to a cart, register or log in, and place orders.
+The application uses:
 
-## 📋 Table of Contents
-- [Technology Stack](#technology-stack)
-- [Project Structure](#project-structure)
-- [Data Flow](#data-flow)
-- [Frontend Architecture](#frontend-architecture)
-- [Backend Architecture](#backend-architecture)
-- [API Endpoints](#api-endpoints)
-- [Deployment](#deployment)
-- [Repository Links](#repository-links)
+-Front-End: HTML, CSS, JavaScript, Vue.js
 
----
+-Back-End: Node.js, Express.js
 
-## 🛠️ Technology Stack
+-Database: MongoDB Atlas
 
-### Frontend
-- **HTML5, CSS3, JavaScript (ES6+)**
-- **Vue.js 3** - Progressive JavaScript framework
-- **Bootstrap 5** - CSS framework
+-Hosting: GitHub Pages (frontend) + Render (backend)
 
-### Backend
-- **Node.js** - JavaScript runtime
-- **Express.js** - Web framework
-- **MongoDB Atlas** - Cloud database
-- **CORS** - Cross-origin resource sharing
 
-### Deployment
-- **Frontend** - GitHub Pages
-- **Backend** - Render
-- **Database** - MongoDB Atlas
+Data Flow
 
----
+User Login/Register
+        ↓
+View Lessons (sorted/filtered)
+        ↓
+Add to Cart
+        ↓
+View Cart & Checkout
+        ↓
+Submit Order → Update Backend
 
-## 📁 Project Structure
 
-### Frontend Structure
-```
+Frontend Structure:
+
 After-School Lessons Marketplace (Vue 3 App)
 │
 ├── Entry Point
-│   └── index.html (Vue mount: #app)
+│   └── index.html
+│       └── #app (Vue mount point)
 │
 ├── Initialization Layer
 │   ├── main/initialization/main.js
 │   │   └── Creates Vue app instance
+│   │
 │   └── main/initialization/app.js
 │       └── App (Root Component)
-│
-├── State Management
-│   ├── view (login/register/lessons/cart)
-│   ├── users, loggedInUser
-│   ├── lessons, cart
-│   ├── form (name, phone)
-│   └── sort, searchQuery
+│           ├── State Management
+│           │   ├── view (login/register/lessons/cart)
+│           │   ├── users, loggedInUser
+│           │   ├── lessons, cart
+│           │   ├── form (name, phone)
+│           │   └── sort, searchQuery
+│           │
+│           └── Methods & Computed Properties
+│               ├── Authentication (login, register, logout)
+│               ├── Cart Operations (add, remove)
+│               ├── Filtering & Sorting
+│               └── Checkout & API calls
 │
 ├── Component Layer (main/component/)
-│   ├── HeaderBar.js - Navigation & user info
-│   ├── LoginView.js - Email/Password login
-│   ├── RegisterView.js - User registration
-│   ├── LessonList.js - Browse & filter lessons
-│   └── CartView.js - Cart & checkout
+│   ├── HeaderBar.js
+│   │   └── Displays title, cart button, logout
+│   │
+│   ├── LoginView.js
+│   │   └── Email/Password login form
+│   │
+│   ├── RegisterView.js
+│   │   └── User registration form
+│   │
+│   ├── LessonList.js
+│   │   ├── Search functionality
+│   │   ├── Sort & filter
+│   │   └── Add/Remove from cart
+│   │
+│   └── CartView.js
+│       ├── Display cart items
+│       ├── Checkout form (name, phone)
+│       └── Order submission
 │
 └── External APIs
     ├── GET https://coursework-2-t7m3.onrender.com (Fetch lessons)
     ├── POST http://localhost:3000/orders (Submit order)
     └── PUT http://localhost:3000/lessons/{id} (Update spaces)
-```
 
-### Backend Structure
-```
+    
+
+Backend Structure:
+
 Backend/
-├── index.js                 # Main Express server
-├── package.json             # Dependencies & metadata
-├── package-lock.json        # Locked versions
-├── README.md                # Documentation
-├── .env                     # Environment variables
-├── .git/                    # Git repository
-├── .gitignore               # Git ignore rules
-└── node_modules/            # Installed packages
+├── index.js                 # Main Express server file
+├── package.json            # Project dependencies & metadata
+├── package-lock.json       # Locked dependency versions
+├── README.md               # Project documentation
+├── .env                    # Environment variables (MongoDB URI, Port, DB_NAME)
+├── .git/                   # Git repository files
+├── .gitignore             # Git ignore rules
+└── node_modules/          # Installed dependencies
     ├── express
     ├── cors
     ├── dotenv
     └── mongodb
-```
 
----
+    
 
-## 🔄 Data Flow
+Link to the GitHub Repository - Frontend: https://github.com/Busolz/Coursework-1.git
 
-```
-1. User Registration/Login
-           ↓
-2. Browse Lessons (sorted/filtered)
-           ↓
-3. Add to Cart
-           ↓
-4. View Cart & Fill Checkout Form
-           ↓
-5. Submit Order
-           ↓
-6. Backend Updates Database & Lesson Spaces
-```
+Link to the GitHub Repository - Backend: https://github.com/Busolz/Coursework-2-.git
 
----
+Link to the render.com: https://coursework-2-t7m3.onrender.com
 
-## 🎨 Frontend Architecture
+MongoDB Atlas screenshot
+<img width="2880" height="1798" alt="MongoDB atlas" src="https://github.com/user-attachments/assets/f77f9374-541d-41b2-ad7b-8e58298edd2d" />
 
-### Root Component (App.js)
-- **State Management**: Handles authentication, cart, lessons, and filters
-- **Authentication**: Login, register, logout functionality
-- **Cart Operations**: Add/remove lessons from cart
-- **Filtering & Sorting**: Search and sort lessons by subject/price
-- **Checkout**: Submit orders with name and phone
+Postman Screenshots
 
-### Key Components
+Backend running:
+<img width="2880" height="1798" alt="Backend running" src="https://github.com/user-attachments/assets/dfb85bb2-fa8e-4b0e-8ae6-3c18ab24fc4c" />
 
-| Component | Purpose |
-|-----------|---------|
-| **HeaderBar.js** | Display title, cart count, logout button |
-| **LoginView.js** | User login form |
-| **RegisterView.js** | User registration form |
-| **LessonList.js** | Display lessons with search, filter, and add to cart |
-| **CartView.js** | Display cart items and checkout form |
+Get Lessons:
+<img width="2880" height="1798" alt="Get Lessons" src="https://github.com/user-attachments/assets/32f2622f-e7d1-4bf1-90fb-652bb07b5338" />
 
----
+Post Orders:
+<img width="2880" height="1798" alt="Post Orders" src="https://github.com/user-attachments/assets/e2f8030e-c4ad-4bcc-b6b8-b7bb22ea144d" />
 
-## 🔌 Backend Architecture
+Put Lessons:
+<img width="2880" height="1798" alt="Put Lessons" src="https://github.com/user-attachments/assets/6847e2a7-4d0c-409d-9a2b-5288e84c1dbd" />
 
-### Main Server (index.js)
-- Express server initialization
-- CORS configuration
-- Route handlers for lessons and orders
-- MongoDB connection
-
-### Environment Variables (.env)
-```
-MONGODB_URI=<your-mongo-atlas-uri>
-PORT=3000
-DB_NAME=lessons_marketplace
-```
-
----
-
-## 📡 API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| **GET** | `/lessons` | Fetch all lessons |
-| **GET** | `/lessons?subject=<query>` | Search lessons |
-| **POST** | `/orders` | Submit new order |
-| **PUT** | `/lessons/:id` | Update lesson spaces |
-
----
-
-## 🚀 Deployment
-
-### Frontend
-- **Hosted on**: GitHub Pages
-- **Repository**: https://github.com/Busolz/Coursework-1.git
-
-### Backend
-- **Hosted on**: Render
-- **URL**: https://coursework-2-t7m3.onrender.com
-- **Repository**: https://github.com/Busolz/Coursework-2-.git
-
-### Database
-- **Hosted on**: MongoDB Atlas
-- **Type**: Cloud NoSQL database
-
----
-
-## 📚 Testing
-
-All endpoints have been tested and verified with Postman:
-- ✅ GET Lessons
-- ✅ POST Orders
-- ✅ PUT Lessons (Update spaces)
-- ✅ Search functionality
-
----
-
-## 🔗 Repository Links
-
-| Component | URL |
-|-----------|-----|
-| **Frontend** | https://github.com/Busolz/Coursework-1.git |
-| **Backend** | https://github.com/Busolz/Coursework-2-.git |
-| **Backend API** | https://coursework-2-t7m3.onrender.com |
-
----
-
-## 📝 License
-
-This project is part of a Full Stack coursework assignment.
+Get Search bar
+<img width="2880" height="1798" alt="Search bar" src="https://github.com/user-attachments/assets/c3455c74-a95b-42ff-beda-3f516f76b842" />
