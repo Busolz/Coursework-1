@@ -10,6 +10,91 @@ The application uses:
 -Hosting: GitHub Pages (frontend) + Render (backend)
 
 
+Data Flow
+
+User Login/Register
+        ↓
+View Lessons (sorted/filtered)
+        ↓
+Add to Cart
+        ↓
+View Cart & Checkout
+        ↓
+Submit Order → Update Backend
+
+
+Frontend Structure:
+
+After-School Lessons Marketplace (Vue 3 App)
+│
+├── Entry Point
+│   └── index.html
+│       └── #app (Vue mount point)
+│
+├── Initialization Layer
+│   ├── main/initialization/main.js
+│   │   └── Creates Vue app instance
+│   │
+│   └── main/initialization/app.js
+│       └── App (Root Component)
+│           ├── State Management
+│           │   ├── view (login/register/lessons/cart)
+│           │   ├── users, loggedInUser
+│           │   ├── lessons, cart
+│           │   ├── form (name, phone)
+│           │   └── sort, searchQuery
+│           │
+│           └── Methods & Computed Properties
+│               ├── Authentication (login, register, logout)
+│               ├── Cart Operations (add, remove)
+│               ├── Filtering & Sorting
+│               └── Checkout & API calls
+│
+├── Component Layer (main/component/)
+│   ├── HeaderBar.js
+│   │   └── Displays title, cart button, logout
+│   │
+│   ├── LoginView.js
+│   │   └── Email/Password login form
+│   │
+│   ├── RegisterView.js
+│   │   └── User registration form
+│   │
+│   ├── LessonList.js
+│   │   ├── Search functionality
+│   │   ├── Sort & filter
+│   │   └── Add/Remove from cart
+│   │
+│   └── CartView.js
+│       ├── Display cart items
+│       ├── Checkout form (name, phone)
+│       └── Order submission
+│
+└── External APIs
+    ├── GET https://coursework-2-t7m3.onrender.com (Fetch lessons)
+    ├── POST http://localhost:3000/orders (Submit order)
+    └── PUT http://localhost:3000/lessons/{id} (Update spaces)
+
+    
+
+Backend Structure:
+
+Backend/
+├── index.js                 # Main Express server file
+├── package.json            # Project dependencies & metadata
+├── package-lock.json       # Locked dependency versions
+├── README.md               # Project documentation
+├── .env                    # Environment variables (MongoDB URI, Port, DB_NAME)
+├── .git/                   # Git repository files
+├── .gitignore             # Git ignore rules
+└── node_modules/          # Installed dependencies
+    ├── express
+    ├── cors
+    ├── dotenv
+    └── mongodb
+
+    
+
 Link to the GitHub Repository - Frontend: https://github.com/Busolz/Coursework-1.git
 
 Link to the GitHub Repository - Backend: https://github.com/Busolz/Coursework-2-.git
