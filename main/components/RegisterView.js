@@ -1,6 +1,6 @@
 const RegisterView = {
-  props: ['error'],
-  emits: ['register', 'switchLogin'],
+  props: ['error'],            // accepts error messages as prop from parent
+  emits: ['register', 'switchLogin'], // emits events upward to App
   data() {
     return { 
       name: '', 
@@ -12,6 +12,7 @@ const RegisterView = {
     <div class="d-flex justify-content-center align-items-center vh-100">
       <div class="card p-4" style="width: 22rem;">
         <h4 class="text-center mb-3">Register</h4>
+        <!-- emit register event with user object when form submitted -->
         <form @submit.prevent="register">
           <div class="mb-3">
             <label>Full Name</label>
@@ -30,6 +31,7 @@ const RegisterView = {
         </form>
         <div class="text-center mt-3">
           <small>Already have an account? 
+            <!-- emit event to switch to login view -->
             <a href="#" @click.prevent="$emit('switchLogin')">Login</a>
           </small>
         </div>
@@ -37,6 +39,7 @@ const RegisterView = {
     </div>
   `,
   methods: {
+    // emit register object to parent
     register() {
       this.$emit('register', { 
         name: this.name, 
