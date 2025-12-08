@@ -1,10 +1,10 @@
 const LoginView = {
-  props: ['error'],            // login error message from parent
+  props: ['error'],
   emits: ['login', 'switchRegister'],
   data() {
-    return { 
-      email: '', 
-      password: '' 
+    return {
+      email: '',
+      password: ''
     };
   },
   template: `
@@ -24,7 +24,7 @@ const LoginView = {
           <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
         <div class="text-center mt-3">
-          <small>Don't have an account? 
+          <small>Don't have an account?
             <a href="#" @click.prevent="$emit('switchRegister')">Register</a>
           </small>
         </div>
@@ -32,11 +32,10 @@ const LoginView = {
     </div>
   `,
   methods: {
-    // emit login event with entered credentials
     login() {
-      this.$emit('login', { 
-        email: this.email, 
-        password: this.password 
+      this.$emit('login', {
+        email: this.email,
+        password: this.password
       });
     }
   }
