@@ -1,5 +1,5 @@
 const HeaderBar = {
-  props: ['cartCount'],
+  props: ['cartCount'], // number of items in cart
   template: `
     <header class="d-flex align-items-center mb-4">
       <div class="me-auto">
@@ -7,6 +7,7 @@ const HeaderBar = {
         <small class="text-muted">Browse & buy lessons</small>
       </div>
       <div class="ms-3 d-flex align-items-center">
+        <!-- cart button: disabled when cart empty -->
         <button class="btn btn-outline-primary me-2 position-relative"
                 :disabled="cartCount === 0"
                 @click="$emit('toggleView')">
@@ -17,6 +18,7 @@ const HeaderBar = {
             {{ cartCount }}
           </span>
         </button>
+        <!-- logout button emits 'logout' to parent -->
         <button class="btn btn-outline-danger btn-sm" @click="$emit('logout')">
           <i class="fa-solid fa-right-from-bracket me-1"></i>Logout
         </button>
