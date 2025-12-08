@@ -38,6 +38,7 @@ const CartView = {
             <div class="row g-2">
               <div class="col-md-6">
                 <label class="form-label">Name</label>
+                <!-- two-way-ish update of form via emit -->
                 <input :value="form.name" 
                        @input="$emit('update:form', {...form, name: $event.target.value})" 
                        class="form-control" 
