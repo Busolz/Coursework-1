@@ -14,5 +14,17 @@
   },
   "devDependencies": {
     "vite": "^4.4.0"
-  }
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Busolz/Coursework-1.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Busolz/Coursework-1/issues"
+  },
+  "homepage": "https://github.com/Busolz/Coursework-1#readme"
 }
