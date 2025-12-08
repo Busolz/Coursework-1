@@ -1,5 +1,5 @@
 const LoginView = {
-  props: ['error'],
+  props: ['error'],            // login error message from parent
   emits: ['login', 'switchRegister'],
   data() {
     return { 
@@ -32,6 +32,7 @@ const LoginView = {
     </div>
   `,
   methods: {
+    // emit login event with entered credentials
     login() {
       this.$emit('login', { 
         email: this.email, 
